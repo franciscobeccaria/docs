@@ -226,3 +226,40 @@ export default function MyComponent() {
   return <div>{isPending ? "Saving..." : "Ready"}</div>;
 }
 ```
+
+---
+
+## 🧪 Prompt para evaluar archivos
+
+```
+Quiero que analices un componente de React que voy a pegarte a continuación.
+
+Tengo una convención muy clara sobre cómo debe organizarse el código antes del `return`. El orden de las secciones debe ser el siguiente, cada una separada con comentarios como `// Context`, `// Mutations`, etc.
+
+Orden correcto:
+
+1. // QueryClient
+2. // Router
+3. // Context
+4. // Constants
+5. // Refs
+6. // States
+7. // Effects
+8. // Hooks
+9. // Queries
+10. // Mutations
+11. // Derived States
+12. // Functions
+13. // Computed Variables
+
+Tu tarea es:
+
+- Verificar si este componente cumple ese orden.
+- Detectar si hay secciones mezcladas o mal ubicadas.
+- Sugerirme cambios puntuales para mejorarlo si es necesario.
+- Opcional: sugerir cómo refactorizar si es demasiado largo o repetitivo.
+
+Por favor, no resumas el componente, solo analizá la estructura.
+
+A continuación te paso el archivo:
+```
