@@ -21,9 +21,8 @@ Cada bloque debe ir **en el siguiente orden**, separado con un **comentario** cl
 // Hooks
 // Queries
 // Mutations
-// Derived States
 // Functions
-// Computed Variables
+// Computed
 ```
 
 ---
@@ -137,17 +136,7 @@ const deleteReport = useMutation(...);
 
 ---
 
-### 11. `// Derived States`
-Valores derivados de otros estados o props. Evita usar `useMemo` si no es necesario.
-
-```tsx
-// Derived States
-const canEdit = visibility === 'shared' || userDatabaseId === creator.id;
-```
-
----
-
-### 12. `// Functions`
+### 11. `// Functions`
 Handlers internos o helpers específicos del componente.
 
 ```tsx
@@ -159,16 +148,20 @@ const handleClick = () => {
 
 ---
 
-### 13. `// Computed Variables`
-Variables como `isPending`, resultado de combinar múltiples flags.
+### 12. `// Computed`
+
+Variables calculadas a partir de props, estados locales, context o flags de queries/mutaciones. Usalas para encapsular lógica condicional o consolidar múltiples flags. **No requieren `useMemo` salvo en casos de mucho costo computacional**.
 
 ```tsx
-// Computed Variables
-const isPending =
-  createReport.isPending ||
-  deleteReport.isPending ||
-  updateTitle.isPending;
+// Computed
+const canEdit = visibility === 'shared' || userDatabaseId === creator.id;
+const isPending = createReport.isPending || updateTitle.isPending;
 ```
+
+️✅ Útil para:
+- Lógica basada en props o estados (`canEdit`, `isOwner`)
+- Consolidar múltiples flags (`isPending`, `isLoadingAny`)
+- Mantener el `return` más legible y simple
 
 ---
 
@@ -220,7 +213,7 @@ export default function MyComponent() {
     updateItem.mutate();
   };
 
-  // Computed Variables
+  // Computed
   const isPending = updateItem.isPending;
 
   return <div>{isPending ? "Saving..." : "Ready"}</div>;
@@ -248,9 +241,8 @@ Orden correcto:
 8. // Hooks
 9. // Queries
 10. // Mutations
-11. // Derived States
-12. // Functions
-13. // Computed Variables
+11. // Functions
+12. // Computed
 
 Tu tarea es:
 
