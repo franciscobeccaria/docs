@@ -45,15 +45,13 @@ export default function ComponentName() {
     },
   });
 
-  // Derived States
-  const canSubmit = isOpen && !isLoading;
-
   // Functions
   const handleSubmit = () => {
     updateItem.mutate();
   };
 
-  // Computed Variables
+  // Computed
+  const canSubmit = isOpen && !isLoading;
   const isPending = updateItem.isPending;
 
   return (
