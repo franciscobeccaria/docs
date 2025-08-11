@@ -120,6 +120,15 @@ Reduces code duplication and improves maintainability
 - Commits con typos o formateo inconsistente
 - Mezclar features, fixes y refactors en un solo commit
 
+## Reglas específicas para Claude Code
+
+### ❌ NO incluir en commits cuando uses Claude Code:
+- **Líneas de generación automática**: `🤖 Generated with [Claude Code](https://claude.ai/code)`
+- **Co-autor automático**: `Co-Authored-By: Claude <noreply@anthropic.com>`
+- **Cualquier referencia automática** a herramientas de IA en el mensaje de commit
+
+**Importante**: Los commits deben reflejar únicamente el cambio técnico realizado, sin metadatos sobre las herramientas utilizadas para generarlo. Claude Code es una herramienta de desarrollo, no parte del historial del proyecto.
+
 ## Flujo recomendado
 
 1. **Hacer cambios relacionados**: Agrupa modificaciones que tienen sentido juntas
