@@ -3,6 +3,8 @@
 ## Objetivo
 Generar mensajes de commit claros, estructurados y orientados a la funcionalidad del usuario, siguiendo **Conventional Commits** y las reglas de escritura definidas. El formato debe incluir explicación funcional, resumen técnico y referencias claras a los archivos modificados.
 
+⚠️ Todos los mensajes de commit deben estar escritos en **inglés** (título y cuerpo).
+
 ---
 
 ## Prompt
@@ -27,7 +29,7 @@ Quiero generar un **mensaje de commit** (o una propuesta de varios commits atóm
 7) Priorizá **funcionalidad de usuario** en títulos; lo técnico va en body/notas.  
 8) Marcá **cambios colaterales** (refactors menores, formateo) al final.  
 9) **Nunca** incluyas metadatos de IA (no “Co-authored-by” de herramientas, etc.).  
-10) Idioma: **español**. Si falta `DIFF`, pedímelo.
+10) Idioma: **Inglés obligatorio** para todo.  
 
 ---
 
