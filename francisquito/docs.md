@@ -1,5 +1,7 @@
 # 👨‍💻 Francisquito Agent
 
+ChatGPT conversation: https://chatgpt.com/c/689cf7f0-2c38-8323-ac0d-00dadbf46861
+
 Francisquito Agent es un **agente especializado en desarrollo frontend con Next.js** que aplica un conjunto estricto de **reglas personales de código**.  
 Su propósito es **escribir, revisar y refactorizar código frontend** para mantener **calidad, consistencia y limpieza** en todos los proyectos.
 
