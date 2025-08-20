@@ -1,152 +1,198 @@
-# 🧠 Enhanced Planner Workflow — Resolución Técnica con IA + Figma + Jira
+# 🧠 Enhanced Planner Workflow — Resolución técnica de UI con IA + Figma + Jira
 
-Este workflow te guía paso a paso para resolver tareas de interfaz (UI) y frontend con la ayuda de IA, combinando herramientas como Jira, Figma, imágenes, CSS autogenerado, componentes ya existentes y procesos manuales complementarios.
+Este flujo está diseñado para resolver tareas de UI/Frontend de forma ordenada, reutilizable y asistida por IA, basándose en contexto real de diseño (Figma), funcional (Jira) y técnico (componentes existentes).
 
----
-
-## 🧩 PASO 1 — Revisión inicial desde Jira
-
-### ✅ Objetivo:
-Entender el alcance funcional y visual de la tarea.
-
-### 🧪 Acción:
-- Leé el **ticket de Jira** y copiá la descripción técnica/funcional.
-- Si hay links a Figma, abrilos y mantenelos a mano.
-- Si ya existen tareas relacionadas (históricas o similares), tomá nota.
+⚠️ **Este workflow está optimizado para trabajar una pantalla por vez. No se recomienda usarlo para flujos completos o múltiples vistas en simultáneo, ya que los resultados suelen ser inconsistentes o de menor calidad.**
 
 ---
 
-## 🖼️ PASO 2 — Recolección de diseño (Figma)
+## 🔰 OBJETIVO
 
-### ✅ Objetivo:
-Obtener los elementos visuales como input para la IA.
-
-### 🧪 Acción:
-- Descargá como imagen (PNG/JPG) **las pantallas o secciones relevantes**.
-- Copiá el **CSS autogenerado** de Figma si está disponible.
-- Identificá los componentes de diseño y registralos.
-
-📌 **Tips útiles:**
-- Podés usar la opción “Copy as PNG” directamente en Figma.
-- Si hay muchas pantallas similares, seleccioná solo las variantes clave.
+- Entender la tarea a fondo antes de tocar código.
+- Integrar el contexto visual, técnico y funcional.
+- Planificar primero, implementar después.
+- Forzar validaciones paso a paso (IA no puede avanzar sin permiso).
 
 ---
 
-## 🧩 PASO 3 — Preparar contexto para la IA
+## 🔹 PASO 1 — RECOLECCIÓN DE CONTEXTO (bloqueante)
 
-📌 Usá este bloque como prompt inicial para Claude/ChatGPT:
+🎯 Objetivo: reunir toda la información necesaria antes de planificar.
+
+📌 **La IA debe hacer estas preguntas una por una**. No puede avanzar hasta completar todas:
+
+1. **Contexto desde Jira**
+   - ¿Podés pegar la descripción del ticket?
+   - ¿Cuál es el objetivo funcional de la tarea?
+
+2. **Pantallas de Figma**
+   - ¿Tenés acceso a un link de Figma?
+   - ¿Podés subir imágenes o describir las pantallas?
+
+3. **CSS autogenerado de Figma (si aplica)**
+   - ¿Tenés el CSS generado por Figma?
+   - ¿Querés incluirlo para que lo tenga como referencia?
+
+4. **Componentes reutilizados**
+   - ¿Hay componentes ya creados que correspondan a elementos del diseño?
+   - ¿Podés decirme cómo se llaman? (ej: "input ➝ DateSelector")
+
+5. **Similitudes**
+   - ¿Esta pantalla es parecida a alguna ya existente?
+   - ¿Se puede aprovechar código anterior?
+
+📦 Una vez completado, la IA debe mostrar algo así:
 
 ```markdown
-Estoy trabajando en una tarea de UI/Frontend.
+## Contexto funcional (Jira)
+...
 
-### Contexto desde Jira
-[Pegá la descripción funcional de Jira]
+## Visuales (Figma)
+...
 
-### Pantallas de Figma
-[Subí las imágenes como adjuntos o explicá qué muestran]
+## CSS generado
+...
 
-### CSS autogenerado (si aplica)
-[Pegá el CSS o clases relevantes]
+## Componentes reutilizables
+- Input de fecha ➝ `DateSelector`
+- Botón primario ➝ `PrimaryButton`
 
-### Componentes reutilizados
-- El input que se ve en Figma se llama `DateSelector` en el proyecto.
-- El botón principal es el mismo que `PrimaryButton`.
-- [Agregá más si aplica]
-
-### Similitudes
-- Esta pantalla es casi igual a la de “Editar usuario”, cambia solo el header y un par de campos.
-
-🎯 Quiero que me ayudes a estructurar un plan para crear esta vista o vistas, reutilizando componentes cuando sea posible.
-Preguntame lo que necesites para entender bien la tarea antes de planificar.
+## Similitudes
+- Es casi igual a la pantalla de "Editar usuario"
 ````
 
+✅ Preguntar al final:
+
+> “¿Querés avanzar al paso de planificación técnica o querés editar el contexto?”
+
+Opciones:
+
+* (1) Continuar al Paso 2
+* (2) Editar el contexto
+* (3) Cancelar sesión
+
 ---
 
-## 🧱 PASO 4 — Generación del plan (IA)
+## 🔹 PASO 2 — PLANIFICACIÓN DE IMPLEMENTACIÓN
 
-### ✅ Objetivo:
+🎯 Objetivo: obtener un plan estructurado, paso a paso, **sin código todavía**.
 
-Obtener un plan de implementación paso a paso sin código aún.
+📌 Output esperado:
 
-### 🧪 Prompt sugerido:
+* Lista progresiva de pasos
+* Agrupado por secciones (si aplica)
+* Notas sobre decisiones técnicas o supuestos
+
+✅ Preguntar al final:
+
+> “¿Querés que divida este plan en tareas ejecutables?”
+
+Opciones:
+
+* (1) Sí, continuar al Paso 3
+* (2) Editar el plan
+* (3) Volver al Paso 1
+* (4) Cancelar sesión
+
+---
+
+## 🔹 PASO 3 — TAREAS MANUALES
+
+🎯 Objetivo: listar todo lo que no se puede automatizar.
+
+📋 Preguntar:
+
+* ¿Hay íconos que hay que descargar?
+* ¿Se deben instalar paquetes o fonts?
+* ¿Hay pasos que no querés que la IA resuelva?
+
+📌 Output esperado:
 
 ```markdown
-Ahora generá un plan paso a paso para implementar esta tarea de UI.
-
-- Indicá si se pueden reutilizar vistas o componentes.
-- Dividilo por secciones si hay múltiples partes.
-- No escribas código aún, solo organizá la implementación.
-
-🎯 Una vez listo el plan, dividilo en tareas tipo checklist.
+### Manual Tasks
+- [ ] Descargar íconos de calendario desde Heroicons
+- [ ] Instalar `react-icons` vía npm
+- [ ] Agregar fuente “Inter”
 ```
 
----
+✅ Preguntar al final:
 
-## 🧩 PASO 5 — Revisión y ajustes manuales
+> “¿Querés que ahora lo divida todo en tareas concretas para implementación?”
 
-### ✅ Objetivo:
+Opciones:
 
-Resolver posibles bloqueos técnicos fuera del alcance de la IA.
-
-### 📌 Acciones posibles:
-
-* Descargar e instalar íconos manualmente (ej: desde Heroicons, Phosphor, etc.).
-* Mapear manualmente componentes usados (si hay diferencias entre nombre visual y real).
-* Ajustar el diseño si la implementación requiere cambios estructurales.
+* (1) Sí, seguir al Paso 4
+* (2) Agregar más tareas manuales
+* (3) Volver al paso anterior
+* (4) Cancelar
 
 ---
 
-## 🧩 PASO 6 — Implementación con IA
+## 🔹 PASO 4 — DIVIDIR EN TAREAS EJECUTABLES
 
-### ✅ Objetivo:
+🎯 Objetivo: convertir el plan en tareas claras para implementar.
 
-Resolver todas las tareas una por una, hasta completar la vista.
-
-📌 Prompt repetible por tarea:
+📌 Output:
 
 ```markdown
-Vamos a resolver esta tarea del plan:
-
-## Tarea
-[Descripción exacta]
-
-¿Podés escribirme el código necesario, explicarlo y ayudarme a implementarlo paso a paso?
+- [ ] Crear layout base
+- [ ] Agregar componente `DateSelector`
+- [ ] Integrar botón `PrimaryButton`
+- [ ] Aplicar estilos según Figma
 ```
 
-🔁 Repetir hasta completar toda la lista de tareas.
+✅ Preguntar:
+
+> “¿Querés comenzar a resolver estas tareas una por una?”
+
+Opciones:
+
+* (1) Elegir tarea
+* (2) Editar lista
+* (3) Volver al paso anterior
+* (4) Terminar sesión
 
 ---
 
-## 🧩 PASO 7 — Documentar aprendizajes (opcional)
+## 🔹 PASO 5 — DOCUMENTAR PATRONES / LECCIONES (opcional)
 
-Si detectás patrones útiles o decisiones técnicas relevantes, documentalos:
+🎯 Objetivo: guardar aprendizajes o patrones reutilizables.
+
+📩 Preguntar:
+
+* ¿Detectamos una buena práctica que valga la pena guardar?
+
+🧪 Output:
 
 ```markdown
-Quiero guardar este aprendizaje como snippet técnico:
-
-- 📌 Nombre del patrón
-- 🕒 Cuándo aplicarlo
-- 🛠 Cómo se implementa
-- 💻 Código de ejemplo (si aplica)
+## Patrón: Mapeo visual ➝ componente real
+- Cuándo: cuando el diseño no coincide con el nombre del componente
+- Cómo: input en Figma ➝ `DateSelector`
+- Ejemplo: se documentó en paso 1
 ```
 
-Guardalo en tu sistema de snippets o base de conocimientos.
+✅ Preguntar:
+
+> “¿Querés guardar esto como snippet o cerrar la sesión?”
+
+Opciones:
+
+* (1) Guardar
+* (2) Finalizar
+* (3) Volver a tareas
 
 ---
 
 ## ✅ RESUMEN DEL FLUJO
 
-1. 📋 Leer el ticket en Jira
-2. 🎨 Obtener pantallas y CSS desde Figma
-3. 🧠 Preparar el contexto para la IA
-4. 🧱 Recibir un plan paso a paso
-5. 🔧 Realizar acciones manuales necesarias
-6. 💻 Implementar tarea por tarea con IA
-7. 📘 Documentar patrones si aplica
+1. Recolectar todo el contexto en una sola pantalla
+2. Crear un plan paso a paso sin código
+3. Identificar tareas manuales
+4. Dividir en tareas claras
+5. Resolver una por una
+6. Documentar aprendizajes si aplica
 
 ---
 
-💡 *Tip extra:* Este flujo puede complementarse con tu propio repositorio de snippets, decisiones técnicas y estándares visuales. Ideal para escalar diseño e implementación de forma consistente.
-
-¿Querés que te lo genere como archivo `.md` para guardar o cargar directamente en Claude Code o tu editor de preferencia? Puedo preparártelo ahora.
-```
+💡 *Recomendación importante:*
+**No intentes aplicar este flujo a múltiples pantallas o flujos completos en simultáneo.** Funciona mejor cuando se aplica a una sola vista o sección por vez.
