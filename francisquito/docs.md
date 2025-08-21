@@ -414,6 +414,53 @@ useEffect(() => {
 
 ---
 
+### 1️⃣5️⃣ Aplicar DRY a llamadas de funciones (NEW)
+
+**Descripción:**  
+Extraer llamadas repetidas a funciones/métodos/APIs dentro del mismo scope.  
+Si la misma expresión se usa varias veces, guardarla en una variable.
+
+**Ejemplo ❌ Incorrecto:**
+
+```js
+const getBackUrl = () => {
+  if (searchParams.get('from') === 'card-manager') return '/card-manager';
+  return `/account-activity?product=credit-card${searchParams.get('number') ?
+    `&number=${searchParams.get('number')}` : ''}`;
+};
+````
+
+**Ejemplo ✅ Correcto:**
+
+```js
+const getBackUrl = () => {
+  const cardNumber = searchParams.get('number');
+  if (searchParams.get('from') === 'card-manager') return '/card-manager';
+  return `/account-activity?product=credit-card${cardNumber ? `&number=${cardNumber}` : ''}`;
+};
+```
+
+**Motivo:**
+
+* **Performance**: evita llamadas redundantes.
+* **Mantenibilidad**: un único punto de cambio.
+* **Legibilidad**: intención más clara.
+* **Debugging**: facilita la inspección.
+
+**Aplicar a:**
+
+* `searchParams.get()`
+* `props.method()`
+* Dependencias repetidas en `useState()` / `useEffect()`
+* Llamadas a APIs
+* Cálculos complejos
+* Acceso a propiedades de objetos (ej: `user.profile.settings.theme`)
+
+**Excepción:**
+Si la extracción afecta negativamente la legibilidad, o si las llamadas están en ramas mutuamente excluyentes.
+
+---
+
 ## ✅ Beneficios globales
 
 * Código más **limpio, compacto y claro**.
