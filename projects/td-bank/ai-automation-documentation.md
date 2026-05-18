@@ -1,5 +1,7 @@
 # The Real Secret Behind AI Automation Is Developer Documentation
 
+<img width="1672" height="941" alt="ChatGPT Image May 18, 2026, 12_16_35 PM" src="https://github.com/user-attachments/assets/9695dcde-eca8-48be-b214-7b34d0465d6a" />
+
 Many teams think AI automation starts with a better prompt.
 
 After working with the TD Bank App Web project, I think the real answer is different:
