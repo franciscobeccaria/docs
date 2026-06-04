@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIRES — 16 KB Upgrade · Meeting Deck</title>
+<style>
+  :root{
+    --bg:#0b1020; --bg2:#121a33; --card:#16203f; --line:#243154;
+    --ink:#eaf0ff; --muted:#9fb0d6; --dim:#6f80a8;
+    --accent:#4f8cff; --accent2:#22d3a6; --warn:#ffb454; --bad:#ff6b7d; --good:#3ddc97;
+    --chip:#1d2a4d;
+    --mono:'SF Mono',ui-monospace,'Cascadia Code',Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:radial-gradient(1200px 700px at 80% -10%,#1a2750 0%,var(--bg) 55%);
+    color:var(--ink); font-family:var(--sans); overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* ---------- deck mechanics ---------- */
+  .deck{height:100vh;width:100vw;position:relative}
+  .slide{
+    position:absolute;inset:0;display:none;flex-direction:column;
+    padding:5.5vh 7vw 8vh; animation:fade .4s ease;
+  }
+  .slide.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  /* ---------- header bits ---------- */
+  .kicker{font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:clamp(30px,4.6vw,62px);line-height:1.05;margin:14px 0 8px;font-weight:800;letter-spacing:-.02em}
+  h2{font-size:clamp(24px,3.2vw,42px);line-height:1.1;margin:6px 0 22px;font-weight:800;letter-spacing:-.02em}
+  .sub{font-size:clamp(15px,1.5vw,20px);color:var(--muted);max-width:60ch;line-height:1.5}
+  .lead{font-size:clamp(17px,1.7vw,22px);color:var(--ink);max-width:64ch;line-height:1.55}
+
+  /* ---------- layout helpers ---------- */
+  .grow{flex:1;display:flex;flex-direction:column;justify-content:center}
+  .grid{display:grid;gap:18px}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .card{background:linear-gradient(180deg,var(--card),#131c39);border:1px solid var(--line);
+    border-radius:16px;padding:22px 22px;}
+  .card h3{font-size:17px;margin-bottom:8px;color:var(--ink);font-weight:700}
+  .card p{color:var(--muted);font-size:15px;line-height:1.5}
+  .card .big{font-size:34px;font-weight:800;letter-spacing:-.02em;margin-bottom:2px}
+
+  .pill{display:inline-flex;align-items:center;gap:7px;background:var(--chip);border:1px solid var(--line);
+    color:var(--muted);border-radius:999px;padding:6px 13px;font-size:13px;font-weight:600}
+  .pill.good{color:var(--good);border-color:#1c5440;background:#10261f}
+  .pill.warn{color:var(--warn);border-color:#5a4420;background:#231a0e}
+  .pill.bad{color:var(--bad);border-color:#5a2330;background:#23121a}
+  .pill.acc{color:var(--accent);border-color:#234072;background:#101d38}
+
+  ul.clean{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:6px}
+  ul.clean li{display:flex;gap:12px;align-items:flex-start;font-size:clamp(15px,1.5vw,18px);line-height:1.45;color:var(--ink)}
+  ul.clean li .mk{flex:0 0 auto;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;
+    font-size:13px;font-weight:800;margin-top:1px}
+  .mk.ok{background:#10261f;color:var(--good);border:1px solid #1c5440}
+  .mk.no{background:#23121a;color:var(--bad);border:1px solid #5a2330}
+  .mk.dot{background:#101d38;color:var(--accent);border:1px solid #234072}
+  li b{color:var(--ink)} li span.m{color:var(--muted)}
+
+  table{width:100%;border-collapse:collapse;font-size:clamp(13px,1.35vw,16px)}
+  th,td{text-align:left;padding:13px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--dim);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+  td{color:var(--muted);line-height:1.4}
+  td b,td strong{color:var(--ink)}
+  tr.hl td{background:#101d38}
+  .tag{font-family:var(--mono);font-size:.92em;background:#0d1730;border:1px solid var(--line);
+    padding:2px 7px;border-radius:6px;color:var(--accent2)}
+
+  code,.mono{font-family:var(--mono)}
+  .codeblock{background:#0a1124;border:1px solid var(--line);border-radius:12px;padding:16px 18px;
+    font-family:var(--mono);font-size:14px;color:#cfe0ff;line-height:1.6;overflow:auto}
+  .codeblock .ok{color:var(--good)} .codeblock .c{color:var(--dim)}
+
+  .flow{display:flex;align-items:stretch;gap:0;flex-wrap:wrap}
+  .step{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;position:relative}
+  .step .n{font-size:12px;color:var(--dim);font-weight:700;letter-spacing:.1em}
+  .step .t{font-size:15px;font-weight:700;margin:6px 0 4px}
+  .step .d{font-size:13px;color:var(--muted);line-height:1.4}
+  .arrow{align-self:center;color:var(--dim);font-size:22px;padding:0 8px}
+  @media(max-width:900px){.arrow{transform:rotate(90deg)}}
+
+  .quote{border-left:3px solid var(--accent);padding:10px 0 10px 20px;font-size:clamp(18px,2vw,26px);
+    line-height:1.4;color:var(--ink);font-weight:600;max-width:60ch}
+  .quote small{display:block;color:var(--muted);font-size:14px;font-weight:500;margin-top:10px}
+
+  .pull{font-size:clamp(20px,2.4vw,32px);font-weight:800;line-height:1.25;letter-spacing:-.02em;max-width:24ch}
+  .pull .hl{color:var(--accent2)}
+
+  /* ---------- footer / nav ---------- */
+  .bar{position:fixed;bottom:0;left:0;right:0;height:48px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 22px;background:linear-gradient(0deg,rgba(8,12,26,.95),transparent);font-size:12px;color:var(--dim);z-index:20}
+  .bar .brand{font-weight:700;color:var(--muted)}
+  .dots{display:flex;gap:7px}
+  .dots i{width:8px;height:8px;border-radius:50%;background:var(--line);cursor:pointer;transition:.2s}
+  .dots i.on{background:var(--accent);transform:scale(1.25)}
+  .nav{display:flex;gap:8px}
+  .nav button{background:var(--chip);border:1px solid var(--line);color:var(--muted);border-radius:8px;
+    width:34px;height:30px;font-size:15px;cursor:pointer}
+  .nav button:hover{color:var(--ink);border-color:var(--accent)}
+  .counter{font-variant-numeric:tabular-nums}
+  .hint{position:fixed;top:16px;right:20px;font-size:11px;color:var(--dim);z-index:20}
+  .title-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:13px;color:var(--muted)}
+  .legend span{display:inline-flex;gap:6px;align-items:center}
+  .sq{width:12px;height:12px;border-radius:3px;display:inline-block}
+</style>
+</head>
+<body>
+<div class="hint">← → / Space to navigate · F fullscreen</div>
+<div class="deck" id="deck">
+
+  <!-- 1 · TITLE -->
+  <section class="slide active">
+    <div class="grow">
+      <div class="kicker">AIRES Mobile · Change Request CR011</div>
+      <h1>Android 16 KB Page-Size<br>Compatibility Upgrade</h1>
+      <p class="sub">React Native framework upgrade to keep AIRES shippable on Google Play and stable on modern Android devices — done conservatively, verified end-to-end.</p>
+      <div class="title-meta">
+        <span class="pill acc">React Native 0.75.5 → 0.77.3</span>
+        <span class="pill good">✓ Phase 1 complete &amp; verified</span>
+        <span class="pill">Old Architecture kept</span>
+        <span class="pill">Deadline: Feb 2027</span>
+      </div>
+      <div class="legend">
+        <span><i class="sq" style="background:var(--good)"></i> done / passing</span>
+        <span><i class="sq" style="background:var(--warn)"></i> needs decision / CI</span>
+        <span><i class="sq" style="background:var(--accent)"></i> in progress / next</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · THE PROBLEM -->
+  <section class="slide">
+    <div class="kicker">1 · The Problem</div>
+    <h2>Why this work exists</h2>
+    <div class="grow">
+      <div class="grid g3" style="margin-bottom:22px">
+        <div class="card"><div class="big" style="color:var(--bad)">16 KB</div><p>Google Play now requires apps targeting Android 15+ to support <b>16 KB memory pages</b> — native libraries must be aligned to 16 KB, not 4 KB.</p></div>
+        <div class="card"><div class="big" style="color:var(--warn)">Blocked</div><p>Without it: <b>no app updates</b> (bug fixes, security, features) and <b>crashes</b> on the newest Android devices.</p></div>
+        <div class="card"><div class="big" style="color:var(--accent)">RN core</div><p>The misaligned files live inside <b>Hermes &amp; React Native</b> binaries — no Gradle flag or local patch fixes it.</p></div>
+      </div>
+      <p class="lead"><b>The only fix is upgrading the React Native runtime + Android NDK toolchain.</b> Deadline was extended to Feb 2027, so the mandate was: do it <span style="color:var(--accent2)">conservatively</span> — the smallest change that meets the requirement.</p>
+      <div class="title-meta">
+        <span class="pill warn">Hard constraint: keep Old Architecture (<code>newArchEnabled=false</code>)</span>
+        <span class="pill">No New Architecture — too risky, out of scope</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · COMPETING ANALYSES -->
+  <section class="slide">
+    <div class="kicker">2 · The Audit</div>
+    <h2>Four analyses — one big disagreement</h2>
+    <div class="grow">
+      <p class="sub" style="margin-bottom:14px">Three sources proposed how to do this. They split on the single most important variable: <b>which RN version to target.</b></p>
+      <table>
+        <thead><tr><th>Source</th><th>Target</th><th>Verdict after our audit</th></tr></thead>
+        <tbody>
+          <tr><td><b>Mario / Mayo</b><br><span class="m">original plan</span></td><td><span class="tag">0.81.6</span></td><td>Solid engineering, but <b style="color:var(--warn)">over-scoped</b> — 0.81 is modernization, not the requirement. Misidentified the 16 KB floor as 0.79.</td></tr>
+          <tr><td><b>Gemini</b><br><span class="m">deep research</span></td><td><span class="tag">0.77.3</span></td><td><b style="color:var(--good)">Right target</b> — but overstated 0.78+ risk and misattributed edge-to-edge to the RN version.</td></tr>
+          <tr><td><b>ChatGPT</b><br><span class="m">deep research</span></td><td><span class="tag">0.77.3</span></td><td><b style="color:var(--good)">Strongest external analysis</b> — well-sourced; added the Play-bundle check &amp; "bridge strategy" framing.</td></tr>
+          <tr class="hl"><td><b>Our audit</b></td><td><span class="tag">0.77.3</span></td><td>Verified <b>every</b> load-bearing claim against official RN &amp; Android sources.</td></tr>
+        </tbody>
+      </table>
+      <p class="lead" style="margin-top:18px"><span class="pill good">Convergence</span> &nbsp;Every analysis that did <b>fresh research</b> landed on <b style="color:var(--accent2)">RN 0.77.3</b> — not 0.81.</p>
+    </div>
+  </section>
+
+  <!-- 4 · THE VERSION ANSWER -->
+  <section class="slide">
+    <div class="kicker">3 · The Decision</div>
+    <h2>Why 0.77.3 — verified against the source</h2>
+    <div class="grow">
+      <div class="quote">"With the 0.77 release, React Native is ready to <span style="color:var(--accent2)">fully support 16 KB page size</span>."
+        <small>— Official React Native 0.77 release blog (primary source)</small></div>
+      <ul class="clean" style="margin-top:26px">
+        <li><span class="mk dot">✓</span><div><b>0.77 is the official 16 KB floor.</b> <span class="m">The first release that fully supports it.</span></div></li>
+        <li><span class="mk dot">✓</span><div><b>React 19 ships in 0.78, not 0.77.</b> <span class="m">Stopping at 0.77 keeps React 18 → avoids a large, risky JS migration.</span></div></li>
+        <li><span class="mk dot">✓</span><div><b>0.82 ignores <code>newArchEnabled=false</code>.</b> <span class="m">So 0.81 is the last Old-Arch-capable release — relevant only to optional Phase 2.</span></div></li>
+        <li><span class="mk dot">✓</span><div><b>Google's docs:</b> <span class="m">16 KB-by-default needs AGP 8.5.1+ &amp; NDK r28+; gated on targetSdk 35 — which AIRES already had.</span></div></li>
+      </ul>
+      <p class="pull" style="margin-top:26px">Phase 1 → <span class="hl">0.77.3</span> (mandatory). &nbsp; Phase 2 → 0.81.x (optional, separate decision).</p>
+    </div>
+  </section>
+
+  <!-- 5 · THE REAL ISSUE -->
+  <section class="slide">
+    <div class="kicker">4 · The Discovery</div>
+    <h2>The real cost wasn't React Native core</h2>
+    <div class="grow">
+      <p class="sub" style="margin-bottom:16px">No analysis predicted this — because none <b>built</b> the actual app. The first Android build's audit came back <b>18 / 19 aligned</b>: one third-party library shipped a 4 KB binary. Then a pattern emerged.</p>
+      <table>
+        <thead><tr><th>Library</th><th>Android needs</th><th>iOS (Fabric) needs</th><th>Resolved to</th></tr></thead>
+        <tbody>
+          <tr><td><b>react-native-pdf</b></td><td>≥ 7 <span class="m">(alignment)</span></td><td>—</td><td><span class="tag">^7.0.1</span></td></tr>
+          <tr class="hl"><td><b>react-native-svg</b></td><td>≥ 15 <span class="m">(new API)</span></td><td>&lt; 15.13 <span class="m">(older Yoga)</span></td><td><span class="tag">15.12.1 pinned</span></td></tr>
+          <tr><td><b>react-native-reanimated</b></td><td>—</td><td>3.16.x <span class="m">(3.19 = RN 0.78+ API)</span></td><td><span class="tag">~3.16.7</span></td></tr>
+          <tr><td><b>react-native-share</b></td><td>—</td><td>≥ 12 <span class="m">(codegen header)</span></td><td><span class="tag">^12.3.1</span></td></tr>
+        </tbody>
+      </table>
+      <p class="lead" style="margin-top:18px"><b>Android wanted some libraries newer; iOS wanted those same libraries older.</b> <span class="m">Discoverable only by building both platforms.</span></p>
+      <p class="pull" style="margin-top:14px">The version is the means — <span class="hl">the build + alignment audit is the gate.</span></p>
+    </div>
+  </section>
+
+  <!-- 6 · WHAT WE DID -->
+  <section class="slide">
+    <div class="kicker">5 · What We Did</div>
+    <h2>Phase 1 — RN 0.75.5 → 0.77.3</h2>
+    <div class="grow">
+      <div class="grid g2">
+        <div class="card">
+          <h3>Upgrade &amp; conservatism</h3>
+          <ul class="clean">
+            <li><span class="mk ok">✓</span><div><b>Old Architecture kept</b> <span class="m">— newArchEnabled=false</span></div></li>
+            <li><span class="mk ok">✓</span><div><b>Hermes kept</b> <span class="m">— JS engine unchanged</span></div></li>
+            <li><span class="mk ok">✓</span><div><b>iOS AppDelegate kept in Obj-C++</b> <span class="m">— no Swift rewrite</span></div></li>
+            <li><span class="mk ok">✓</span><div><b>NDK r28, Kotlin 2.0.21, Gradle 8.10.2</b></div></li>
+            <li><span class="mk ok">✓</span><div><b>Dropped 32-bit ABIs</b> <span class="m">— 16 KB devices are 64-bit; halves APK size</span></div></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Delivered as</h3>
+          <ul class="clean">
+            <li><span class="mk dot">↳</span><div><b>Incremental hops</b> <span class="m">0.75 → 0.76 → 0.77.3, each a checkpoint</span></div></li>
+            <li><span class="mk dot">↳</span><div><b>4 targeted library bumps</b> <span class="m">only what broke the build</span></div></li>
+            <li><span class="mk dot">↳</span><div><b>Branch</b> <span class="m"><code>feature/AIR-16kb-rn-077</code> off develop</span></div></li>
+            <li><span class="mk dot">↳</span><div><b>3 documents</b> <span class="m">plan · Phase 1 report · this summary</span></div></li>
+          </ul>
+          <div class="title-meta"><span class="pill">React 18 unchanged</span><span class="pill">Smallest viable change</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · VERIFICATION -->
+  <section class="slide">
+    <div class="kicker">6 · Proof</div>
+    <h2>Verified end-to-end — both platforms</h2>
+    <div class="grow">
+      <div class="grid g4" style="margin-bottom:20px">
+        <div class="card"><div class="big" style="color:var(--good)">19/19</div><p><code>.so</code> files 16 KB-aligned <span class="m">(arm64 &amp; x86_64)</span></p></div>
+        <div class="card"><div class="big" style="color:var(--good)">16384</div><p><code>getconf PAGE_SIZE</code> on a real 16 KB emulator</p></div>
+        <div class="card"><div class="big" style="color:var(--good)">PASS</div><p><code>zipalign -P 16</code> &amp; 64-bit-only ABIs</p></div>
+        <div class="card"><div class="big" style="color:var(--good)">0</div><p>crashes — Android <b>&amp;</b> iOS build &amp; launch clean</p></div>
+      </div>
+      <div class="codeblock">
+<span class="c"># Android release APK on the 16 KB kernel</span><br>
+zipalign -c -P 16 -v 4 app-staging-release.apk   <span class="ok">→ Verification successful</span><br>
+ELF alignment (NDK r28)  arm64-v8a: <span class="ok">19/19 ≥16KB</span>   x86_64: <span class="ok">19/19 ≥16KB</span><br>
+adb shell getconf PAGE_SIZE                        <span class="ok">→ 16384</span><br>
+nativeloader: libhermes / libreactnative / libjsi  <span class="ok">→ ok (no crash)</span><br>
+<span class="c"># iOS: 'Development' scheme</span>  <span class="ok">** BUILD SUCCEEDED **</span> · launches on simulator
+      </div>
+      <p class="lead" style="margin-top:16px">App welcome/login screen renders, all <b>20 native modules autolink</b>, JS runtime active. <span class="m">App confirmed running in the simulator.</span></p>
+    </div>
+  </section>
+
+  <!-- 8 · WHAT'S NEXT -->
+  <section class="slide">
+    <div class="kicker">7 · What's Next</div>
+    <h2>To ship Phase 1</h2>
+    <div class="grow">
+      <div class="flow" style="margin-bottom:26px">
+        <div class="step"><div class="n">STEP 1</div><div class="t">Push &amp; PR</div><div class="d">Open PR for <code>feature/AIR-16kb-rn-077</code> into <code>develop</code>. Currently local only.</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">STEP 2</div><div class="t">CI signed bundle</div><div class="d">Production-signed AAB + <code>bundletool</code> 16 KB check (needs release keystore — CI secret).</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">STEP 3</div><div class="t">QA regression</div><div class="d">Juanjo: full functional pass on Android + iOS (login, biometrics, PDF, share…).</div></div>
+        <div class="arrow">→</div>
+        <div class="step"><div class="n">STEP 4</div><div class="t">Ship</div><div class="d">Release to Google Play — compliance met.</div></div>
+      </div>
+      <div class="grid g2">
+        <div class="card"><h3>What's left is not engineering</h3><p>The requirement is met and verified locally. The remaining gates are <b>CI signing</b> and <b>human QA</b> — neither doable on a dev machine.</p></div>
+        <div class="card"><h3>Honest limits</h3><p>Login &amp; authenticated flows need real backend creds (QA's job). Local verification used a debug-signed APK; the official Play check runs in CI.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · PHASE 2 -->
+  <section class="slide">
+    <div class="kicker">8 · Decision for this meeting</div>
+    <h2>Phase 2 — optional, your call</h2>
+    <div class="grow">
+      <div class="grid g2">
+        <div class="card" style="border-color:#1c5440">
+          <div class="pill good" style="margin-bottom:10px">Recommended path</div>
+          <h3>Ship Phase 1 first</h3>
+          <p>RN 0.77.3 already <b>meets the contractual requirement</b>. Get it through CI + QA and released. Lowest risk, fastest compliance.</p>
+        </div>
+        <div class="card" style="border-color:#5a4420">
+          <div class="pill warn" style="margin-bottom:10px">Optional modernization</div>
+          <h3>Phase 2 → RN 0.81.x</h3>
+          <p>The last Old-Arch release. <b>Not required for compliance.</b> Crosses the React 18→19 wall at 0.78 and forces bigger migrations:</p>
+          <ul class="clean" style="margin-top:10px">
+            <li><span class="mk dot">•</span><div><span class="m">react-query → @tanstack/react-query v5</span></div></li>
+            <li><span class="mk dot">•</span><div><span class="m">react-navigation v6 → v7 · Firebase v20 → v22</span></div></li>
+          </ul>
+        </div>
+      </div>
+      <p class="pull" style="margin-top:24px">Phase 2 is <span class="hl">"0.81 or nothing"</span> — there's no safe middle stop, and only after Phase 1 ships.</p>
+    </div>
+  </section>
+
+  <!-- 10 · CLOSE -->
+  <section class="slide">
+    <div class="grow" style="align-items:flex-start">
+      <div class="kicker">Summary</div>
+      <h1>Compliance met.<br>App intact. Ready for review.</h1>
+      <ul class="clean" style="margin-top:18px;max-width:70ch">
+        <li><span class="mk ok">✓</span><div><b>Audited</b> three plans → chose the minimal correct target, <b>RN 0.77.3</b>, verified against official sources.</div></li>
+        <li><span class="mk ok">✓</span><div><b>Executed &amp; verified</b> — 19/19 libraries 16 KB-aligned on a real 16 KB kernel; Android &amp; iOS build and run.</div></li>
+        <li><span class="mk dot">→</span><div><b>Next:</b> push → PR into develop → CI signed-bundle check → Juanjo QA → ship.</div></li>
+        <li><span class="mk dot">→</span><div><b>To decide:</b> whether to pursue optional Phase 2 (RN 0.81) after Phase 1 ships.</div></li>
+      </ul>
+      <div class="title-meta">
+        <span class="pill">docs/16kb-summary.md</span>
+        <span class="pill">docs/16kb-rn-upgrade-plan.md</span>
+        <span class="pill">docs/16kb-phase1-report.md</span>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="bar">
+  <span class="brand">AIRES · 16 KB Upgrade — CR011</span>
+  <div class="dots" id="dots"></div>
+  <div class="nav">
+    <span class="counter"><span id="cur">1</span> / <span id="tot">10</span></span>
+    <button onclick="go(idx-1)">‹</button>
+    <button onclick="go(idx+1)">›</button>
+  </div>
+</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const dotsWrap=document.getElementById('dots');
+  let idx=0;
+  document.getElementById('tot').textContent=slides.length;
+  slides.forEach((_,i)=>{const d=document.createElement('i');d.onclick=()=>go(i);dotsWrap.appendChild(d)});
+  const dots=[...dotsWrap.children];
+  function go(n){
+    idx=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,i)=>s.classList.toggle('active',i===idx));
+    dots.forEach((d,i)=>d.classList.toggle('on',i===idx));
+    document.getElementById('cur').textContent=idx+1;
+  }
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();go(idx+1)}
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();go(idx-1)}
+    else if(e.key==='Home'){go(0)} else if(e.key==='End'){go(slides.length-1)}
+    else if(e.key.toLowerCase()==='f'){if(!document.fullscreenElement)document.documentElement.requestFullscreen();else document.exitFullscreen()}
+  });
+  go(0);
+</script>
+</body>
+</html>
