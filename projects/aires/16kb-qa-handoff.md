@@ -1,7 +1,7 @@
 # AIRES — QA Handoff: React Native 0.75.5 → 0.81.6 upgrade
 
-> **For:** Juanjo (QA Engineer) · **Owner:** Francisco · **Date:** 2026-06-03
-> **PR:** [#134](https://github.com/AiresIT/mobile-app/pull/134) · **Branch:** `feature/AIR-16kb-rn-077`
+> **For:** Juanjo (QA Engineer) · **Owner:** Francisco · **Date:** 2026-06-03 _(updated 2026-06-04 after internal review)_
+> **PR:** [#134](https://github.com/AiresIT/mobile-app/pull/134) · **Branch:** `feature/AIR-16kb-rn-077` · **Latest commit:** `6a3f792`
 > **Type:** Full-app **regression** pass on **both platforms** (Android + iOS).
 > **Builds are live in Firebase App Distribution (`qa-team` group)** — see §4 for versions + install.
 
@@ -20,9 +20,12 @@ A major React Native upgrade — **0.75.5 → 0.81.6** — to make the **Android
 | 16 KB compliance (zipalign -P 16, 64-bit only, 19/19 native libs aligned) | ✅ pass |
 | Boots to first screen, both platforms | ✅ pass |
 | **Authenticated smoke test on real iOS device (login + basic navigation)** | ✅ **pass (Francisco, 2026-06-03)** |
+| Internal code review on the full diff vs `develop` | ✅ **done (2026-06-04)** — see PR #134 [review comment](https://github.com/AiresIT/mobile-app/pull/134#issuecomment-4624374053) |
 | **Full functional regression, both platforms** | ⏳ **this handoff — Juanjo** |
 
 The authenticated smoke test passing on-device is the key unblock: the app logs in and the main flows render on the real backend. What remains is a **thorough, behavior-level regression** by QA across all flows and both platforms.
+
+**Since the 2026-06-03 builds**, an internal review found and fixed **one regression** (commit `6a3f792`): the React Navigation v7 migration had caused a **back arrow to incorrectly appear on the Contact tab header** — now suppressed again. Please re-confirm the Contact tab shows **no back arrow** (see §5 Navigation). All other review findings were pre-existing (not caused by this upgrade) — see §8.
 
 ## 3. What changed under the hood (where the risk is)
 
@@ -39,15 +42,17 @@ No app features were added/changed, but the foundation moved a lot. Highest-risk
 
 Final versions: RN 0.81.6 · React 19.1.4 · @tanstack/react-query 5.100.14 · @react-navigation/native 7.2.5 · @react-native-firebase 22.4.0 · gesture-handler 2.31.2 · screens 4.24.0 · reanimated 3.19.5 · svg 15.15.5 · i18next 15.7.4 · TypeScript 5.6.3. **Old Architecture kept** (`newArchEnabled=false`), Hermes on.
 
-## 4. Builds to test (both from PR commit `0f92dda`)
+## 4. Builds to test (from PR commit `6a3f792`)
 
 Firebase project: **`springboardpushnotification`** → **App Distribution** → group **`qa-team`**.
 
 | Platform | Release | App ID | Notes |
 |---|---|---|---|
-| **iOS** | **3.3.1 (75)** | `com.AIReS.AIReSMobile.enterprise` | Enterprise-signed (Koombea Inc.) staging build. |
-| **Android (staging)** | **3.3-staging (176)** | `...:android:8a0ec4869b6357c988a129` | primary build to test |
-| **Android (stagingProd)** | **3.3-stagingProd (177)** | same app | secondary / prod-config variant |
+| **iOS** | **3.3.1 (76)** | `com.AIReS.AIReSMobile.enterprise` | Enterprise-signed (Koombea Inc.) staging build, rebuilt on `6a3f792`. |
+| **Android (staging)** | **3.3-staging (180)** | `...:android:8a0ec4869b6357c988a129` | primary build to test |
+| **Android (stagingProd)** | **3.3-stagingProd (181)** | same app | secondary / prod-config variant |
+
+> ⚠️ **Use the new builds on commit `6a3f792`** (iOS 76, Android 180/181) — they include the Contact-tab back-button fix. The earlier iOS 75 / Android 176/177 builds do **not**.
 
 **Install:**
 - Make sure your devices/email are in the **`qa-team`** tester group (Firebase Console → App Distribution → Testers & Groups).
@@ -76,6 +81,7 @@ Firebase project: **`springboardpushnotification`** → **App Distribution** →
 
 **Navigation (v7)**
 - ⭐ Back button + **swipe-back gesture** (both platforms)
+- ⭐ **Contact tab header shows NO back arrow** (root tabs should have no back button — regressed and fixed in `6a3f792`). Sanity-check the other root tabs (Home, Expenses, Services, More) show no back arrow either; pushed/detail screens correctly *do* show one.
 - Tab bar switching; deep links / universal links (open app to correct screen)
 
 **Native features**
@@ -107,6 +113,12 @@ If anything looks shifted vs. current production, flag it — most likely *visua
 Flagged by stricter typing during the upgrade — **may or may not be real**, please confirm behavior:
 1. **Copyright text** (login area / `LoginMethodSelector`): confirm the copyright string displays.
 2. **Expense form payment account** (`ExpenseFormDetails`): confirm the payment-account **description** shows on the expense detail screen.
+
+**Pre-existing issues surfaced by the internal review (NOT caused by this upgrade — do not file as upgrade regressions, but worth confirming):**
+3. **Empty-list edge case** on Comments and Expense Forms lists: if the list is empty and the "load more" trigger fires, there's a latent crash path (`comments[0]` / `expenseForms[0]` on an empty array). Pre-existing on `develop`. If you can reach a truly empty Comments or Expense Forms list, scroll to the bottom and confirm no crash.
+4. **"Load more" pagination** (Comments, Expense Forms): the end-of-list detection is loose (pre-existing). Confirm pagination stops correctly at the last page and doesn't keep spinning / re-requesting.
+
+These are documented on the PR for a future fix; listed here so QA expects them and reports against the right cause.
 
 ## 9. Reporting
 
