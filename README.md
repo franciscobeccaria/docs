@@ -80,6 +80,15 @@ Each section maps to a step in the workflow. Read in order when onboarding; jump
 
 ---
 
+## Reusable Skills
+
+> Claude Code skills authored for this workflow. Each folder is a self-contained `SKILL.md` (plus references) that can be dropped into `~/.claude/skills/`.
+
+- [Idea to Feature](skills/idea-to-feature/SKILL.md) — turn a raw idea into a lean ticket: capture → iterate UI in a chosen lane → write ACs that follow the idea *only*, no padding. Feeds step 1 (Feature Spec).
+- [Weekly Checkin](skills/weekly-checkin/SKILL.md) — reconstruct what you worked on each day for the Koombea timesheet by cross-referencing git commits, GitHub PRs, and Jira ticket history. See [project map](skills/weekly-checkin/references/projects.md).
+
+---
+
 ## Project Notes
 
 > Project-specific docs. Follow the same workflow but scoped to a single project.
