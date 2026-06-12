@@ -13,6 +13,7 @@
 | **`16kb-summary.md`** (this file) | The story + index | Start here |
 | [`16kb-rn-upgrade-plan.md`](./16kb-rn-upgrade-plan.md) | The plan — strategy, version decisions, Phase 1 & 2 | For the *why* |
 | [`16kb-phase1-report.md`](./16kb-phase1-report.md) | Phase 1 record — exact changes, verification, next steps | For the *what was done* |
+| [`16kb-iteration2/`](./16kb-iteration2/00-README.md) | **Iteration 2** — reconciling the 0.81 upgrade with Erika's `develop` merges + fixing the React Navigation v7 regressions | For *what happened after #134 went green* |
 
 ---
 
