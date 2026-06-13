@@ -93,6 +93,16 @@ Each section maps to a step in the workflow. Read in order when onboarding; jump
 
 > Project-specific docs. Follow the same workflow but scoped to a single project.
 
+### Mina Baie
+- [Documentation Index](projects/mina-baie/00-index.md) — index + quick reference for all 7 docs
+- [01 — Project Context](projects/mina-baie/01-project-context.md) — architecture, services, client contacts
+- [02 — Implementation Log](projects/mina-baie/02-implementation-log.md) — all PRs, technical decisions
+- [03 — Known Issues & Fixes](projects/mina-baie/03-known-issues-and-fixes.md) — bugs, root causes, fixes
+- [04 — Workflow](projects/mina-baie/04-workflow.md) — branch naming, commit conventions, deploy & sync
+- [05 — Auto Featured Product](projects/mina-baie/05-auto-featured-product.md) — feature analysis, estimate, work plan
+- [06 — PR #18 Final Status](projects/mina-baie/06-pr-18-final-status.md) — Klaviyo visibility fix, 4 QA iterations
+- [07 — Project Status Snapshot](projects/mina-baie/07-project-status-snapshot.md) — global status as of 2026-04-21
+
 ### TD Bank
 - [Development Guidelines](projects/td-bank/development-guidelines.md) — component-first principles, research-driven workflow, naming conventions
 
